@@ -25,21 +25,28 @@ import { useRouter, usePathname } from "next/navigation";
 const type: any = "create";
 
 interface Props {
+    type?: string;
     mongoUserId: string;
+    questionDetails?: string;
 }
 
-const Question = ({ mongoUserId }: Props) => {
+const Question = ({ type, mongoUserId, questionDetails }: Props) => {
     const editorRef = useRef(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
 
+    const parsedQuestionDetails =
+        questionDetails && JSON.parse(questionDetails || "");
+
+    const groupedTags = parsedQuestionDetails?.tags.map((tag: any) => tag.name);
+
     const form = useForm<z.infer<typeof QuestionsSchema>>({
         resolver: zodResolver(QuestionsSchema),
         defaultValues: {
-            title: "",
-            explanation: "",
-            tags: [],
+            title: parsedQuestionDetails?.title || "",
+            explanation: parsedQuestionDetails?.content || "",
+            tags: groupedTags || [],
         },
     });
 
@@ -110,7 +117,7 @@ const Question = ({ mongoUserId }: Props) => {
                     render={({ field }) => (
                         <FormItem className="flex w-full flex-col">
                             <FormLabel className="paragraph-semibold text-dark400_light800">
-                                Question Title{" "}
+                                Question Title
                                 <span className="text-primary-500">*</span>
                             </FormLabel>
                             <FormControl className="mt-3.5">
@@ -205,7 +212,7 @@ const Question = ({ mongoUserId }: Props) => {
                                         onKeyDown={(e) =>
                                             handleInputKeyDown(e, field)
                                         }
-                                        {...field}
+                                        // {...field}
                                     />
 
                                     {field.value.length > 0 && (
