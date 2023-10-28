@@ -22,8 +22,6 @@ import Image from "next/image";
 import { createQuestion } from "@/lib/actions/question.action";
 import { useRouter, usePathname } from "next/navigation";
 
-const type: any = "create";
-
 interface Props {
     type?: string;
     mongoUserId: string;
