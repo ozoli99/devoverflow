@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/context/ThemeProvider";
 import type { Metadata } from "next";
 
 import "./globals.css";
+import "../styles/prism.css";
 
 const inter = Inter({
     subsets: ["latin"],
