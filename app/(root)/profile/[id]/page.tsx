@@ -1,3 +1,4 @@
+import ProfileLink from "@/components/shared/ProfileLink";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getUserInfo } from "@/lib/actions/user.action";
@@ -32,10 +33,29 @@ const Page = async ({ params, searchParams }: URLProps) => {
                         </p>
 
                         <div className="mt-5 flex flex-wrap items-center justify-start gap-5">
-                            {userInfo.user.location && <>location</>}
-                            {getJoinedDate(userInfo.user.joinedAt)}
+                            {userInfo.user.portfolioWebsite && (
+                                <ProfileLink
+                                    imgUrl="/assets/icons/link.svg"
+                                    href={userInfo.user.portfolioWebsite}
+                                    title="Portfolio"
+                                />
+                            )}
+                            {userInfo.user.location && (
+                                <ProfileLink
+                                    imgUrl="/assets/icons/location.svg"
+                                    title={userInfo.user.location}
+                                />
+                            )}
+                            <ProfileLink
+                                imgUrl="/assets/icons/calendar.svg"
+                                title={getJoinedDate(userInfo.user.joinedAt)}
+                            />
                         </div>
-                        {userInfo.user.bio && <p>{userInfo.user.bio}</p>}
+                        {userInfo.user.bio && (
+                            <p className="paragraph-regular text-dark400_light800 mt-8">
+                                {userInfo.user.bio}
+                            </p>
+                        )}
                     </div>
                 </div>
                 <div className="flex justify-end max-sm:mb-5 max-sm:w-full sm:mt-3">
