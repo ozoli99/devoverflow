@@ -1,34 +1,28 @@
-import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
-import Filter from "@/components/shared/Filter";
-import { QuestionFilters } from "@/constants/filters";
-import NoResult from "@/components/shared/NoResult";
 import QuestionCard from "@/components/cards/QuestionCard";
-import { getSaveedQuestions } from "@/lib/actions/user.action";
-import { auth } from "@clerk/nextjs";
+import NoResult from "@/components/shared/NoResult";
+import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { IQuestion } from "@/database/question.model";
+import { getQuestionsByTagId } from "@/lib/actions/tag.action";
+import { URLProps } from "@/types";
+import React from "react";
 
-export default async function Home() {
-    const { userId } = auth();
-    if (!userId) return null;
-
-    const result = await getSaveedQuestions({
-        clerkId: userId,
+const Page = async ({ params, searchParams }: URLProps) => {
+    const result = await getQuestionsByTagId({
+        tagId: params.id,
+        page: 1,
+        searchQuery: searchParams.q,
     });
 
     return (
         <>
-            <h1 className="h1-bold text-dark100_light900">Saved Questions</h1>
-            <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
+            <h1 className="h1-bold text-dark100_light900">{result.tagTitle}</h1>
+            <div className="mt-11 w-full">
                 <LocalSearchbar
                     route="/"
                     iconPosition="left"
                     imgSrc="/assets/icons/search.svg"
-                    placeholder="Search for questions"
+                    placeholder="Search for tag questions"
                     otherClasses="flex-1"
-                />
-                <Filter
-                    filters={QuestionFilters}
-                    otherClasses="min-h-[56px] sm:min-w-[170px]"
                 />
             </div>
 
@@ -49,7 +43,7 @@ export default async function Home() {
                     ))
                 ) : (
                     <NoResult
-                        title="There's no saved question to show"
+                        title="There's no tag question to show"
                         description="Be the first to break the silence! Ask a Question and kickstart
                     the discussion. Our query could be the next big thing others
                     learn from. Get involved!"
@@ -60,4 +54,6 @@ export default async function Home() {
             </div>
         </>
     );
-}
+};
+
+export default Page;
