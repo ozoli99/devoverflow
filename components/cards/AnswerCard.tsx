@@ -3,6 +3,7 @@ import { SignedIn } from "@clerk/nextjs";
 import { Link } from "lucide-react";
 import React from "react";
 import Metric from "../shared/Metric";
+import EditDeleteAction from "../shared/EditDeleteAction";
 
 interface Props {
     clerkId?: string | null;
