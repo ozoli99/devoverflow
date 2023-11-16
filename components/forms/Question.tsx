@@ -166,7 +166,7 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
                                         field.onChange(content)
                                     }
                                     initialValue={
-                                        parsedQuestionDetails.content || ""
+                                        parsedQuestionDetails?.content || ""
                                     }
                                     init={{
                                         height: 350,
