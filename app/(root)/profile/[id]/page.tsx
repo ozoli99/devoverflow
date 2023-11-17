@@ -1,16 +1,16 @@
+import Link from "next/link";
+import React from "react";
+import Stats from "@/components/shared/Stats";
+import Image from "next/image";
 import AnswersTab from "@/components/shared/AnswersTab";
 import ProfileLink from "@/components/shared/ProfileLink";
 import QuestionTab from "@/components/shared/QuestionTab";
-import Stats from "@/components/shared/Stats";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { URLProps } from "@/types";
 import { getUserInfo } from "@/lib/actions/user.action";
 import { getJoinedDate } from "@/lib/utils";
-import { URLProps } from "@/types";
 import { SignedIn, auth } from "@clerk/nextjs";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Page = async ({ params, searchParams }: URLProps) => {
     const { userId: clerkId } = auth();
