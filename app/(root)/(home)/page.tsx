@@ -1,12 +1,13 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import Filter from "@/components/shared/Filter";
-import { HomePageFilters } from "@/constants/filters";
-import HomeFilters from "@/components/home/HomeFilters";
 import NoResult from "@/components/shared/NoResult";
+import Pagination from "@/components/shared/Pagination";
+import HomeFilters from "@/components/home/HomeFilters";
 import QuestionCard from "@/components/cards/QuestionCard";
+import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
+import { Button } from "@/components/ui/button";
 import { getQuestions } from "@/lib/actions/question.action";
+import { HomePageFilters } from "@/constants/filters";
 import { SearchParamsProps } from "@/types";
 
 export default async function Home({ searchParams }: SearchParamsProps) {
@@ -73,6 +74,12 @@ export default async function Home({ searchParams }: SearchParamsProps) {
                         linkTitle="Ask a Question"
                     />
                 )}
+            </div>
+            <div className="mt-10">
+                <Pagination
+                    pageNumber={searchParams?.page ? +searchParams.page : 1}
+                    isNext={result.isNext}
+                />
             </div>
         </>
     );
