@@ -1,6 +1,9 @@
 "use server";
 
 import Answer from "@/database/answer.model";
+import Question from "@/database/question.model";
+import Interaction from "@/database/interaction.model";
+import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../mongoose";
 import {
     AnswerVoteParams,
@@ -8,9 +11,6 @@ import {
     DeleteAnswerParams,
     GetAnswersParams,
 } from "./shared.types";
-import Question from "@/database/question.model";
-import { revalidatePath } from "next/cache";
-import Interaction from "@/database/interaction.model";
 
 export async function createAnswer(params: CreateAnswerParams) {
     try {
