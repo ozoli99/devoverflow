@@ -95,7 +95,9 @@ export async function getAllUsers(params: GetAllUsersParams) {
     try {
         connectToDatabase();
 
-        const { searchQuery, filter } = params;
+        const { searchQuery, filter, page = 1, pageSize = 20 } = params;
+
+        const skipAmount = (page - 1) * pageSize;
 
         const query: FilterQuery<typeof User> = {};
 
@@ -122,9 +124,15 @@ export async function getAllUsers(params: GetAllUsersParams) {
                 break;
         }
 
-        const users = await User.find(query).sort(sortOptions);
+        const users = await User.find(query)
+            .sort(sortOptions)
+            .skip(skipAmount)
+            .limit(pageSize);
 
-        return { users };
+        const totalUsers = await User.countDocuments(query);
+        const isNext = totalUsers > skipAmount + users.length;
+
+        return { users, isNext };
     } catch (error) {
         console.log(error);
         throw error;
@@ -170,7 +178,15 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
     try {
         connectToDatabase();
 
-        const { clerkId, searchQuery, filter } = params;
+        const {
+            clerkId,
+            searchQuery,
+            filter,
+            page = 1,
+            pageSize = 20,
+        } = params;
+
+        const skipAmount = (page - 1) * pageSize;
 
         const query: FilterQuery<typeof Question> = searchQuery
             ? { title: { $regex: new RegExp(searchQuery, "i") } }
@@ -203,6 +219,8 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
             match: query,
             options: {
                 sort: sortOptions,
+                skip: skipAmount,
+                limit: pageSize + 1,
             },
             populate: [
                 { path: "tags", model: Tag, select: "_id name" },
@@ -213,13 +231,16 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
                 },
             ],
         });
+
+        const isNext = user.saved.length > pageSize;
+
         if (!user) {
             throw new Error("User not found");
         }
 
         const savedQuestions = user.saved;
 
-        return { questions: savedQuestions };
+        return { questions: savedQuestions, isNext };
     } catch (error) {
         console.log(error);
         throw error;

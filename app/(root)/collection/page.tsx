@@ -1,11 +1,12 @@
-import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import Filter from "@/components/shared/Filter";
-import { QuestionFilters } from "@/constants/filters";
 import NoResult from "@/components/shared/NoResult";
+import Pagination from "@/components/shared/Pagination";
 import QuestionCard from "@/components/cards/QuestionCard";
-import { getSavedQuestions } from "@/lib/actions/user.action";
+import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { auth } from "@clerk/nextjs";
 import { IQuestion } from "@/database/question.model";
+import { QuestionFilters } from "@/constants/filters";
+import { getSavedQuestions } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
 
 export default async function Home({ searchParams }: SearchParamsProps) {
@@ -16,6 +17,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
         clerkId: userId,
         searchQuery: searchParams.q,
         filter: searchParams.filter,
+        page: searchParams.page ? +searchParams.page : 1,
     });
 
     return (
@@ -60,6 +62,12 @@ export default async function Home({ searchParams }: SearchParamsProps) {
                         linkTitle="Ask a Question"
                     />
                 )}
+            </div>
+            <div className="mt-10">
+                <Pagination
+                    pageNumber={searchParams?.page ? +searchParams.page : 1}
+                    isNext={result.isNext}
+                />
             </div>
         </>
     );

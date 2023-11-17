@@ -1,16 +1,18 @@
-import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
-import Filter from "@/components/shared/Filter";
-import { UserFilters } from "@/constants/filters";
-import React from "react";
-import { getAllUsers } from "@/lib/actions/user.action";
 import Link from "next/link";
+import React from "react";
+import Filter from "@/components/shared/Filter";
 import UserCard from "@/components/cards/UserCard";
+import Pagination from "@/components/shared/Pagination";
+import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
+import { UserFilters } from "@/constants/filters";
+import { getAllUsers } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
 
 const Page = async ({ searchParams }: SearchParamsProps) => {
     const result = await getAllUsers({
         searchQuery: searchParams.q,
         filter: searchParams.filter,
+        page: searchParams.page ? +searchParams.page : 1,
     });
 
     return (
@@ -47,6 +49,12 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
                     </div>
                 )}
             </section>
+            <div className="mt-10">
+                <Pagination
+                    pageNumber={searchParams?.page ? +searchParams.page : 1}
+                    isNext={result.isNext}
+                />
+            </div>
         </>
     );
 };
