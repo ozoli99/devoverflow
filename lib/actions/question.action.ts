@@ -218,7 +218,14 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
             throw new Error("Question not found");
         }
 
-        // Increment author's reputation
+        // Increment author's reputation by +2/-2 for upvoting/revoking an upvote to the question
+        await User.findByIdAndUpdate(userId, {
+            $inc: { reputation: hasdownVoted ? -2 : 2 },
+        });
+        // Increment author's reputation by +10/-10 for receiving an upvote/downvote to the question
+        await User.findByIdAndUpdate(question.author, {
+            $inc: { reputation: hasdownVoted ? -10 : 10 },
+        });
 
         revalidatePath(path);
     } catch (error) {
