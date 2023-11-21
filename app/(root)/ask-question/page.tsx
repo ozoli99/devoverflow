@@ -4,6 +4,14 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { getUserById } from "@/lib/actions/user.action";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Ask a Question | Dev Overflow",
+    description:
+        "Dev Overflow is a community of 1,000,000+ developers. Join us.",
+};
+
 const Page = async () => {
     const { userId } = auth();
     if (!userId) redirect("/sign-in");

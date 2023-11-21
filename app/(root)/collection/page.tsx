@@ -9,6 +9,14 @@ import { QuestionFilters } from "@/constants/filters";
 import { getSavedQuestions } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Collection | Dev Overflow",
+    description:
+        "Dev Overflow is a community of 1,000,000+ developers. Join us.",
+};
+
 export default async function Home({ searchParams }: SearchParamsProps) {
     const { userId } = auth();
     if (!userId) return null;
