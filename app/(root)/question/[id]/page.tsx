@@ -8,12 +8,11 @@ import ParseHTML from "@/components/shared/ParseHTML";
 import RenderTag from "@/components/shared/RenderTag";
 import AllAnswers from "@/components/shared/AllAnswers";
 import { auth } from "@clerk/nextjs";
-import { URLProps } from "@/types";
 import { getUserById } from "@/lib/actions/user.action";
 import { getQuestionById } from "@/lib/actions/question.action";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 
-const Page = async ({ params, searchParams }: URLProps) => {
+const Page = async ({ params, searchParams }: any) => {
     const { userId: clerkId } = auth();
 
     let mongoUser;

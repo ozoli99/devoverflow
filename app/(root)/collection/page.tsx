@@ -4,7 +4,6 @@ import Pagination from "@/components/shared/Pagination";
 import QuestionCard from "@/components/cards/QuestionCard";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { auth } from "@clerk/nextjs";
-import { IQuestion } from "@/database/question.model";
 import { QuestionFilters } from "@/constants/filters";
 import { getSavedQuestions } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
@@ -47,7 +46,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
 
             <div className="mt-10 flex w-full flex-col gap-6">
                 {result.questions.length > 0 ? (
-                    result.questions.map((question: IQuestion) => (
+                    result.questions.map((question: any) => (
                         <QuestionCard
                             key={question._id}
                             _id={question._id}
